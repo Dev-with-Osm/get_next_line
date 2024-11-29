@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   gat_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okhourss <okhourss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 18:00:51 by okhourss          #+#    #+#             */
-/*   Updated: 2024/11/28 18:00:51 by okhourss         ###   ########.fr       */
+/*   Created: 2024/11/29 01:08:28 by okhourss          #+#    #+#             */
+/*   Updated: 2024/11/29 01:08:28 by okhourss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1337
+# endif
+
+# ifndef MAXIMUM_FD
+#  define MAXIMUM_FD 1024
 # endif
 
 # include <stdlib.h>

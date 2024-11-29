@@ -58,6 +58,6 @@
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
     "*.css": "tailwindcss",
-    "get_next_line.h": "c"
+    "gat_next_line_bonus.h": "c"
   }
 }

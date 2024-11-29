@@ -1,82 +1,122 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: okhourss <okhourss@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/28 17:55:07 by okhourss          #+#    #+#             */
+/*   Updated: 2024/11/28 17:55:07 by okhourss         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-char	*extract_line(char *stash)
+char	*get_next_line(int fd)
 {
-    int		line_length;
-    char	*line;
+	static char	*saved_data;
+	char		*read_buffer;
+	char		*line_to_return;
 
-    line_length = 0;
-    if (!stash)
-        return (NULL);
-    while (stash[line_length] && stash[line_length] != '\n')
-        line_length++;
-    if (stash[line_length] == '\n')
-        line_length++;
-    line = ft_substr(stash, 0, line_length);
-    if (!line)
-        return (NULL);
-    return (line);
+	line_to_return = NULL;
+	read_buffer = malloc(BUFFER_SIZE + 1);
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (free_resources(&read_buffer, &saved_data));
+	if (!read_buffer)
+		return (NULL);
+	saved_data = read_and_store(fd, saved_data, read_buffer);
+	if (saved_data[0] == '\0')
+	{
+		free(saved_data);
+		saved_data = NULL;
+		return (NULL);
+	}
+	line_to_return = extract_line(saved_data, line_to_return);
+	saved_data = trim_saved_data(saved_data);
+	return (line_to_return);
 }
 
- char *get_next_line(int fd)
- {
-    static char	*stash = NULL;
-    char		*line;
-    char		*buffer;
-    ssize_t		nbytes;
-    char		*temp;
+char	*trim_saved_data(char *saved_data)
+{
+	int		i;
+	int		len;
+	char	*new_saved_data;
 
-    line = NULL;
-    nbytes = 1;
-    if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
-        return (NULL);
-    buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-    if (!buffer)
-        return (NULL);
-    while (nbytes > 0)
-    {
-        nbytes = read(fd, buffer, BUFFER_SIZE);
-        if (nbytes == -1)
-        {
-            free(buffer);
-            free(stash);
-            return (NULL);
-        }
-        if (nbytes == 0)
-            break ;
-        buffer[nbytes] = '\0';
-        temp = stash;
-        stash = ft_strjoin(stash, buffer);
-        free(temp);
-        if (ft_strchr(buffer, '\n'))
-            break ;
-    }
-    free(buffer);
-    if (!stash)
-        return (NULL);
-    line = extract_line(stash);
-    if (!line)
-        return (NULL);
-    temp = ft_substr(stash, ft_strlen(line), ft_strlen(stash) - ft_strlen(line));
-    free(stash);
-    stash = temp;
-    return (line);
+	if (!saved_data)
+		return (NULL);
+	len = 0;
+	while (saved_data[len] != '\n' && saved_data[len])
+		len++;
+	if (saved_data[len] == '\n')
+		len++;
+	new_saved_data = malloc(ft_strlen(saved_data) - len + 1);
+	if (!new_saved_data)
+		return (NULL);
+	i = 0;
+	while (saved_data[i + len])
+	{
+		new_saved_data[i] = saved_data[i + len];
+		i++;
+	}
+	new_saved_data[i] = '\0';
+	free(saved_data);
+	return (new_saved_data);
 }
 
-int	main(void)
+char	*extract_line(char *saved_data, char *line)
 {
-    int	fd;
+	int		i;
+	int		len;
 
-    fd = open("text.txt", O_CREAT | O_RDONLY);
-    if (fd < 0)
-    {
-        perror("Failed to open file");
-        return (1);
-    }
-    printf("fd = %d\n", fd);
-    printf("%s", get_next_line(fd));  // Read first line
-    printf("%s", get_next_line(fd));  // Read second line
-    printf("%s", get_next_line(fd));  // Read third line (etc.)
-    close(fd);
-    return (0);
+	if (!saved_data)
+		return (NULL);
+	len = 0;
+	while (saved_data[len] != '\n' && saved_data[len])
+		len++;
+	if (saved_data[len] == '\n')
+		len++;
+	line = malloc(len + 1);
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		line[i] = saved_data[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
+char	*read_and_store(int fd, char *saved_data, char *read_buffer)
+{
+	ssize_t	bytes_read;
+
+	bytes_read = 1;
+	if (!saved_data)
+		saved_data = ft_strdup("");
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, read_buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(read_buffer);
+			return (NULL);
+		}
+		read_buffer[bytes_read] = '\0';
+		saved_data = ft_strjoin(saved_data, read_buffer);
+		if (ft_strchr(read_buffer, '\n'))
+			break ;
+	}
+	free(read_buffer);
+	return (saved_data);
+}
+
+void	*free_resources(char **read_buffer, char **saved_data)
+{
+	free(*read_buffer);
+	free(*saved_data);
+	*read_buffer = NULL;
+	*saved_data = NULL;
+	return (NULL);
 }

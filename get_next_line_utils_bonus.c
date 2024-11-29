@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: okhourss <okhourss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 17:56:17 by okhourss          #+#    #+#             */
-/*   Updated: 2024/11/28 17:56:17 by okhourss         ###   ########.fr       */
+/*   Created: 2024/11/29 01:09:52 by okhourss          #+#    #+#             */
+/*   Updated: 2024/11/29 01:09:52 by okhourss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
-	int	len;
+	size_t	len;
 
 	if (!s)
 		return (0);
@@ -49,10 +49,10 @@ char	*ft_strdup(const char *s)
 
 	if (!s)
 		return (NULL);
-	i = 0;
 	str = malloc(ft_strlen(s) + 1);
 	if (!str)
 		return (NULL);
+	i = 0;
 	while (s[i])
 	{
 		str[i] = s[i];
