@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okhourss <okhourss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/29 01:09:52 by okhourss          #+#    #+#             */
-/*   Updated: 2024/11/29 01:09:52 by okhourss         ###   ########.fr       */
+/*   Created: 2024/12/02 13:09:11 by okhourss          #+#    #+#             */
+/*   Updated: 2024/12/05 11:23:25 by okhourss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,50 @@ size_t	ft_strlen(const char *s)
 	return (len);
 }
 
+char	*ft_strdup(const char *s)
+{
+	char	*copy;
+
+	if (!s)
+		return (NULL);
+	copy = malloc(ft_strlen(s) + 1);
+	if (!copy)
+		return (NULL);
+	ft_strcpy(copy, s);
+	return (copy);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	size_t	j;
+	char	*new_str;
+
+	if (!s1 || !s2)
+	{
+		free(s1);
+		return (NULL);
+	}
+	new_str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!new_str)
+	{
+		free(s1);
+		return (NULL);
+	}
+	ft_strcpy(new_str, s1);
+	j = 0;
+	while (s2[j])
+	{
+		new_str[ft_strlen(s1) + j] = s2[j];
+		j++;
+	}
+	new_str[ft_strlen(s1) + j] = '\0';
+	free(s1);
+	return (new_str);
+}
+
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
@@ -42,50 +83,18 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	int		i;
-	char	*str;
+	size_t	i;
 
-	if (!s)
-		return (NULL);
-	str = malloc(ft_strlen(s) + 1);
-	if (!str)
+	if (!dest || !src)
 		return (NULL);
 	i = 0;
-	while (s[i])
+	while (src[i])
 	{
-		str[i] = s[i];
+		dest[i] = src[i];
 		i++;
 	}
-	str[i] = '\0';
-	return (str);
-}
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	int		i;
-	int		j;
-	char	*new_str;
-
-	if (!s1 || !s2)
-		return (NULL);
-	new_str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!new_str)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		new_str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		new_str[i + j] = s2[j];
-		j++;
-	}
-	new_str[i + j] = '\0';
-	free(s1);
-	return (new_str);
+	dest[i] = '\0';
+	return (dest);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: okhourss <okhourss@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 18:00:51 by okhourss          #+#    #+#             */
-/*   Updated: 2024/11/28 18:00:51 by okhourss         ###   ########.fr       */
+/*   Created: 2024/12/02 10:39:18 by okhourss          #+#    #+#             */
+/*   Updated: 2024/12/04 12:36:06 by okhourss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,20 @@
 #  define BUFFER_SIZE 1337
 # endif
 
-# include <stdlib.h>
 # include <stdio.h>
+# include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
 
 char	*get_next_line(int fd);
+void	*free_resources(char **saved_data, char **read_buffer);
+char	*read_and_store(int fd, char *saved_data, char *read_buffer);
+char	*extract_line_to_return(char *saved_data, char *line_to_return);
+char	*trim_saved_data(char *saved_data);
 size_t	ft_strlen(const char *s);
-char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
-void	*free_resources(char **read_buffer, char **saved_data);
-char	*read_and_store(int fd, char *saved_data, char *read_buffer);
-char	*extract_line(char *saved_data, char *line);
-char	*trim_saved_data(char *saved_data);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strcpy(char *dest, const char *src);
 
 #endif
