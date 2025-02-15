@@ -22,7 +22,7 @@ char	*get_next_line(int fd)
 	line_to_return = NULL;
 	size = (size_t)BUFFER_SIZE + 1;
 	read_buffer = malloc(size);
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0, fd > MAXIMUM_FD)
 		return (free_resources(&saved_data[fd], &read_buffer));
 	if (!read_buffer)
 		return (NULL);
